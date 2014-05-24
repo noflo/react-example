@@ -1,0 +1,256 @@
+{
+    "properties": {
+        "name": "CreateTodo",
+        "id": "CreateTodo",
+        "project": "todo",
+        "environment": {
+            "type": "noflo-browser"
+        }
+    },
+    "inports": {
+        "additemtolist.in": {
+            "process": "AddItemToList",
+            "port": "in",
+            "metadata": {
+                "x": 1512,
+                "y": 468
+            }
+        },
+        "createaction.in": {
+            "process": "CreateAction",
+            "port": "in",
+            "metadata": {
+                "x": 756,
+                "y": 288
+            }
+        }
+    },
+    "outports": {
+        "additemtolist.out": {
+            "process": "AddItemToList",
+            "port": "out",
+            "metadata": {
+                "x": 1836,
+                "y": 216
+            }
+        }
+    },
+    "groups": [],
+    "processes": {
+        "CreateAction": {
+            "component": "core/Split",
+            "metadata": {
+                "label": "CreateAction",
+                "x": 936,
+                "y": 288
+            }
+        },
+        "InitItem": {
+            "component": "strings/SendString",
+            "metadata": {
+                "label": "InitItem",
+                "x": 1044,
+                "y": 360
+            }
+        },
+        "CreateItem": {
+            "component": "strings/ParseJson",
+            "metadata": {
+                "label": "CreateItem",
+                "x": 1188,
+                "y": 360
+            }
+        },
+        "SetText": {
+            "component": "objects/SetPropertyValue",
+            "metadata": {
+                "label": "SetText",
+                "x": 1296,
+                "y": 288
+            }
+        },
+        "CreateId": {
+            "component": "objects/GetCurrentTimestamp",
+            "metadata": {
+                "label": "CreateId",
+                "x": 1404,
+                "y": 216
+            }
+        },
+        "SetId": {
+            "component": "objects/SetPropertyValue",
+            "metadata": {
+                "label": "SetId",
+                "x": 1512,
+                "y": 288
+            }
+        },
+        "AddItemToList": {
+            "component": "objects/SetPropertyValue",
+            "metadata": {
+                "label": "AddItemToList",
+                "x": 1692,
+                "y": 216
+            }
+        }
+    },
+    "connections": [
+        {
+            "src": {
+                "process": "InitItem",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "CreateItem",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 5
+            }
+        },
+        {
+            "src": {
+                "process": "CreateId",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "AddItemToList",
+                "port": "property"
+            },
+            "metadata": {}
+        },
+        {
+            "src": {
+                "process": "CreateId",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "SetId",
+                "port": "value"
+            },
+            "metadata": {
+                "route": 0
+            }
+        },
+        {
+            "src": {
+                "process": "CreateItem",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "SetText",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 5
+            }
+        },
+        {
+            "src": {
+                "process": "SetId",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "AddItemToList",
+                "port": "value"
+            },
+            "metadata": {
+                "route": 5
+            }
+        },
+        {
+            "src": {
+                "process": "SetText",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "CreateId",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 5
+            }
+        },
+        {
+            "src": {
+                "process": "SetText",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "SetId",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 5
+            }
+        },
+        {
+            "src": {
+                "process": "CreateAction",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "SetText",
+                "port": "value"
+            },
+            "metadata": {
+                "route": 4
+            }
+        },
+        {
+            "src": {
+                "process": "CreateAction",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "InitItem",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 4
+            }
+        },
+        {
+            "data": "{ \"complete\": false }",
+            "tgt": {
+                "process": "InitItem",
+                "port": "string"
+            }
+        },
+        {
+            "data": "text",
+            "tgt": {
+                "process": "SetText",
+                "port": "property"
+            }
+        },
+        {
+            "data": false,
+            "tgt": {
+                "process": "SetText",
+                "port": "keep"
+            }
+        },
+        {
+            "data": false,
+            "tgt": {
+                "process": "SetId",
+                "port": "keep"
+            }
+        },
+        {
+            "data": "id",
+            "tgt": {
+                "process": "SetId",
+                "port": "property"
+            }
+        },
+        {
+            "data": false,
+            "tgt": {
+                "process": "AddItemToList",
+                "port": "keep"
+            }
+        }
+    ]
+}
