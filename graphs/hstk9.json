@@ -1,0 +1,320 @@
+{
+    "properties": {
+        "name": "TODO",
+        "id": "hstk9",
+        "project": "todo",
+        "environment": {
+            "type": "noflo-browser",
+            "content": ""
+        }
+    },
+    "inports": {},
+    "outports": {},
+    "groups": [
+        {
+            "name": "Create TODO",
+            "nodes": [],
+            "metadata": {
+                "description": ""
+            }
+        }
+    ],
+    "processes": {
+        "Dispatch": {
+            "component": "routers/GroupRouter",
+            "metadata": {
+                "label": "Dispatch",
+                "x": 612,
+                "y": 468
+            }
+        },
+        "RemoveItem": {
+            "component": "objects/RemoveProperty",
+            "metadata": {
+                "label": "RemoveItem",
+                "x": 936,
+                "y": 540
+            }
+        },
+        "InitialStore": {
+            "component": "strings/ParseJson",
+            "metadata": {
+                "label": "InitialStore",
+                "x": 576,
+                "y": 252
+            }
+        },
+        "TODOStore": {
+            "component": "core/Kick",
+            "metadata": {
+                "label": "TODOStore",
+                "x": 720,
+                "y": 252
+            }
+        },
+        "MergedList": {
+            "component": "core/Merge",
+            "metadata": {
+                "label": "MergedList",
+                "x": 1152,
+                "y": 468
+            }
+        },
+        "CreateTodo": {
+            "component": "todo/CreateTodo",
+            "metadata": {
+                "label": "CreateTodo",
+                "x": 936,
+                "y": 396
+            }
+        },
+        "todo/RenderTodos_bnxf": {
+            "component": "todo/RenderTodos",
+            "metadata": {
+                "label": "todo/RenderTodos",
+                "x": 1332,
+                "y": 468
+            }
+        },
+        "GetContainer": {
+            "component": "dom/GetElement",
+            "metadata": {
+                "label": "GetContainer",
+                "x": 1152,
+                "y": 252
+            }
+        },
+        "UnhandledEvent": {
+            "component": "core/Drop",
+            "metadata": {
+                "label": "UnhandledEvent",
+                "x": 936,
+                "y": 648
+            }
+        },
+        "SendStore": {
+            "component": "core/RepeatAsync",
+            "metadata": {
+                "label": "SendStore",
+                "x": 828,
+                "y": 252
+            }
+        }
+    },
+    "connections": [
+        {
+            "src": {
+                "process": "InitialStore",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "TODOStore",
+                "port": "data"
+            },
+            "metadata": {
+                "route": 6
+            }
+        },
+        {
+            "src": {
+                "process": "Dispatch",
+                "port": "route"
+            },
+            "tgt": {
+                "process": "TODOStore",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 7
+            }
+        },
+        {
+            "src": {
+                "process": "Dispatch",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "RemoveItem",
+                "port": "property"
+            },
+            "metadata": {
+                "route": 1
+            }
+        },
+        {
+            "src": {
+                "process": "RemoveItem",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "MergedList",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 6
+            }
+        },
+        {
+            "src": {
+                "process": "MergedList",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "TODOStore",
+                "port": "data"
+            },
+            "metadata": {
+                "route": 6
+            }
+        },
+        {
+            "src": {
+                "process": "Dispatch",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "CreateTodo",
+                "port": "createaction.in"
+            },
+            "metadata": {
+                "route": 4
+            }
+        },
+        {
+            "src": {
+                "process": "CreateTodo",
+                "port": "additemtolist.out"
+            },
+            "tgt": {
+                "process": "MergedList",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 6
+            }
+        },
+        {
+            "src": {
+                "process": "RemoveItem",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "RemoveItem",
+                "port": "reset"
+            },
+            "metadata": {
+                "route": 3
+            }
+        },
+        {
+            "src": {
+                "process": "MergedList",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "todo/RenderTodos_bnxf",
+                "port": "items"
+            },
+            "metadata": {
+                "route": 6
+            }
+        },
+        {
+            "src": {
+                "process": "todo/RenderTodos_bnxf",
+                "port": "event"
+            },
+            "tgt": {
+                "process": "Dispatch",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 2
+            }
+        },
+        {
+            "src": {
+                "process": "GetContainer",
+                "port": "element"
+            },
+            "tgt": {
+                "process": "todo/RenderTodos_bnxf",
+                "port": "container"
+            },
+            "metadata": {}
+        },
+        {
+            "src": {
+                "process": "Dispatch",
+                "port": "missed"
+            },
+            "tgt": {
+                "process": "UnhandledEvent",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 10
+            }
+        },
+        {
+            "src": {
+                "process": "TODOStore",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "SendStore",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 6
+            }
+        },
+        {
+            "src": {
+                "process": "SendStore",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "CreateTodo",
+                "port": "additemtolist.in"
+            },
+            "metadata": {
+                "route": 6
+            }
+        },
+        {
+            "src": {
+                "process": "SendStore",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "RemoveItem",
+                "port": "in"
+            },
+            "metadata": {
+                "route": 6
+            }
+        },
+        {
+            "data": "{}",
+            "tgt": {
+                "process": "InitialStore",
+                "port": "in"
+            }
+        },
+        {
+            "data": "body",
+            "tgt": {
+                "process": "GetContainer",
+                "port": "selector"
+            }
+        },
+        {
+            "data": "delete,create",
+            "tgt": {
+                "process": "Dispatch",
+                "port": "routes"
+            }
+        }
+    ]
+}
