@@ -26,6 +26,9 @@ define [
       text: ''
       items: []
       
+    getDefaultProps: ->
+      emitEvent: ->
+
     componentWillReceiveProps: (newProps) ->
       return unless newProps.items
       @setState
@@ -51,5 +54,3 @@ define [
           (button {}, ['Add #' + (@state.items.length + 1)])
         ])
       ])
-
-  return TodoApp
